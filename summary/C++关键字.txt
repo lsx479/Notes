@@ -1,0 +1,7 @@
+1、class   
+2、Public
+3、namespace
+4、true 和 false 是 C++ 中的关键字。
+5.private
+6.protected
+7.this

@@ -1,0 +1,286 @@
+1、MSB  二进制中的最高有效位  一般指符号位  MSB = 1 表示数据为负值 MSB = 0 表示数据为正值
+   LSB  二进制中的最低有效位  
+
+2、IIC传输速度标准100kb/s , 快速400kb/s ,  高速3.4M/s.
+
+3、1ms = 1000us  1us = 1000ns.
+
+4、MP1482是一种单片同步降压稳压器
+
+5、STM32有分小容量，中等容量和大容量的型号，因为STM32F103xx是一个完整的系列，其成员之间是完全地脚对脚兼容，软件和功能上也兼容。在参考手册中，
+   STM32F013x4和STM32F103x6被归为小容量产品，STM32F103x8和STM32F103xB被归为中等容量产品，STM32F103xC,STM32103xD和STM32F103xE被归为大容量产品，
+   其中我们的神舟II号就是选择的STM32F103xC芯片，神舟III号是STM32xE芯片，都是属于大容量产品，容量大一点，大家在做产品和项目时更具备参考性。
+
+6、startup_stm32f10x_ld.s：  适用于小容量 产品
+   startup_stm32f10x_md.s： 适用于中等容量产品
+   startup_stm32f10x_hd.s：  适用于大容量产品
+   这里的容量是指 FLASH 的大小.判断方法如下：
+   小容量：FLASH≤32K
+   中容量：64K≤FLASH≤128K
+   大容量：256K≤FLASH
+
+7、通过串口电平转换芯片SP3238把模块上的CMOS2.8V电平转换成标准的RS232 5V电平
+
+8、LBS（基站定位）定位和AGPS（辅助GPS定位）功能
+
+9、L218采用LCC主流封装
+
+10、STM32根据FLASH主存储块容量、页面的不同，系统存储器的不同，分为小容量、中容量、大容量、互联型，共四类产品
+
+11.  Program Size: Code=1032 RO-data=336 RW-data=12 ZI-data=1836  的含义
+
+     Code: 程序所占用的FLASH大小，存储在FLASH.
+
+     RO-data: Read-only-data,程序定义的常量，存储在FLASH中。
+
+     RW-data:Read-write-data,已经被初始化的变量，存储在SRAM中。
+
+     ZI-data:Zero-Init-data,未被初始化的变量，存储在SRAM中。
+
+12.keil中串口配置printf的方法
+
+	1.添加 #include "stdio.h"
+	2.重定义fputc函数
+	int fputc(int ch,FILE *f)
+	{ 
+		USART_SendData(UART4,ch);
+		while(!(UART4->SR&USART_FLAG_TXE));
+		return(ch);
+	}
+	3.魔术棒--Target 勾选Use Micro LIB 
+
+13.全局变量向上生长，栈区向下生长。stm32的栈顶是程序自动生成的（暂时是这么认为的，有待进一步确定），程序会地洞生成栈顶。并且栈底和全局变量区是紧挨的，因此如果栈溢出的话，会直接将全局变量去的地址拿来自己用，于是全局变量区的地址和栈区的地址重合，导致全局变量遭到局部变量篡改的错误。
+
+14、在 CM3 中，优先级对于异常来说很关键的，它会影响一个异常是否能被响应，以及何
+时可以响应。优先级的数值越小，则优先级越高。CM3 支持中断嵌套，使得高优先级异常
+会抢占(preempt)低优先级异常。有 3 个系统异常：复位，NMI 以及硬 fault，它们有固定的
+优先级，并且它们的优先级号是负数，从而高于所有其它异常。所有其它异常的优先级则都
+是可编程的（但不能编程为负数）。
+
+复位中断的优先级 -3  
+NMI（不可屏蔽中断）-2
+HardFault_Handler -1
+
+15、当数组越界导致访问非法内存才会导致程序进入HardFault_Handler。
+
+16、关于定时器喂狗，如果程序进入HardFault_Handler，硬件fault的优先级高，定时器喂不了狗，就会让程序复位。
+
+17、Keil编译报这种错
+
+..\obj\V55Prj.axf: Error: L6405E: No .ANY selector matches stm32f10x_it.o(i.PendSV_Handler).
+..\obj\V55Prj.axf: Error: L6405E: No .ANY selector matches stm32f10x_it.o(i.SVC_Handler).
+..\obj\V55Prj.axf: Error: L6405E: No .ANY selector matches stm32f10x_it.o(i.SysTick_Handler).
+..\obj\V55Prj.axf: Error: L6405E: No .ANY selector matches stm32f10x_it.o(i.UsageFault_Handler).
+Not enough information to list image symbols.
+Not enough information to list the image map.
+Finished:
+
+ 2 information, 0 warning and 88 error messages.
+"..\obj\V55Prj.axf" - 88 Error(s), 0 Warning(s).
+
+解决方法：
+	魔术棒 -> C/C++ -> 取消勾选 Execute-only Generation
+
+18、创建完工程后，编译报如下错误
+
+	..\obj\demo.axf: error: L6002U: Could not open file ..\obj\core_cm3.o: No such file or 		directory
+   常见Window10系统(一般是路径含中文名导致)
+
+解决方法：更改环境变量
+计算机右键-属性-高级系统设置-高级-环境变量-XX的用户变量（xx是用户名一部分）  里面的temp 和tmp路径是%userprofile%开头，把两个%userprofile%替换成c:\user\default。这样临时文件就不用存到有中文的路径了。原来的%userprofile%默认是c:\user\中文用户名。 （然后重启电脑，打开工程重新编译）
+
+19、找栈顶地址
+
+	mem
+
+20、STM32F10xxx支持三种复位形式，分别为系统复位、上电复位和备份区域复位。
+
+21、 MODBUS-RTU  协议
+     [地址域][功能码][起始地址][数据长度][CRC校验值]
+
+     地址域：  通常一个字节
+     功能码：  通常一个字节
+     起始地址：通常两个字节
+     数据长度：通常两个字节  (以字为单位)例：0x00 06 ,6表示6个字，意思是要访问的数据由12个字节组成。
+     CRC校验： 通常两个字节（对之前的数据帧进行CRC校验，第一个字节为CRC-Lo,第二个字节为CRC-Hi.
+
+
+22、模拟串口中断
+    例：
+	GPIOB->IDR & 0x1000  
+	IDR寄存器是32位寄存器，低16位有效
+	低16位： 0000 0000 0000 0000
+	      --------------------------
+		 8421 8421 8421 8421
+	     ----------------------------
+                
+	配置模拟串口中断例如 PA11  GPIOA->IDR & 0x0800
+			    PB12  GPIOB->IDR & 0x1000
+			    PC8   GPIOC->IDR & 0x0100 
+
+23、在编程过程中，最好不要使用用于调试接口的IO,在Stm32f1系列芯片中，PB3，PB4，PA13，PA14，PA15都是     调试引脚，不能用作普通IO,如果非要使用这个引脚，必须使用它复用功能中的重映射：
+
+   两个步骤
+    一.在时钟配置中打开复用时钟：RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_AFIO,ENABLE);
+
+   二.对引脚进行重映射：GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
+
+   重映射的方式有三种：
+	1.GPIO_Remap_SWJ_JTAGDisable： /*!< JTAG-DP Disabled and SW-DP Enabled */  即能用PB3，PB4，PA15做普通IO，PA13&14用于SWD调试
+
+	2.GPIO_Remap_SWJ_Disable：  /*!< Full SWJ Disabled (JTAG-DP + SW-DP) */  5个引脚全为普通引脚，但不能再用JTAG&SWD仿真器调试，只能用st-link调试 
+
+    3.GPIO_Remap_SWJ_NoJTRST： /*!< Full SWJ Enabled (JTAG-DP + SW-DP) but without JTRST   */PB4可为普通IO口，JTAG&SWD正常使用，但JTAG没有复位
+
+	如果你用到所有的五个引脚当做普通IO口，那么上述步骤二中的重映射配置应写为	GPIO_PinRemapConfig(GPIO_Remap_SWJ_Disable, ENABLE); 如果你用PB3，PB4，PA15做普通IO，	PA13&14用于SWD调试，则重映射配置应写为GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, 	ENABLE); 同理可配置只用PB4可为普通IO口的情况。 
+
+
+24、在STM32外部中断配置时，把PB1 和PD1都配置成中断模式，中断线EXTI_Line1，同一时间只能有一个IO使用这个中断线，初始化的时候谁是最后初始化的，那么这根中断线就分配给了谁，如果能确定外部中断的先后性，那么在EXTI1_IRQHandler这个中断服务程序里面，可以设置个标志位，进行仲裁，不这样做的话，后面设置的会把前面的覆盖掉的。
+
+
+
+25、在stm32f1中，sizeof(int)=4    
+	sizeof(short)=2    
+	sizeof(float)=4
+	sizeof(double)=8
+
+26、继电器只是一个开关，（不是通电的）主要是用来使用小电压控制大电压，主要控制大电压一头的零线，一般用来控制零线的导通来形成回路。
+
+27、模拟串口接收引脚的中断函数里，如果不熟悉对应的寄存器位，可以调用库函数读取引脚的输入状态。   
+   void EXTI2_IRQHandler(void)
+   {
+	u8 i = 9;
+	u8 temp = 0;
+	
+	if(EXTI_GetITStatus(EXTI_Line2)!=RESET)
+	{
+		NVIC->ICER[EXTI2_IRQn>>0x05] = (uint32_t)0x01 << (EXTI2_IRQn & (uint8_t)0x1F);
+		EXTI_ClearITPendingBit(EXTI_Line2);
+		delay_us(30);
+		while(i--)
+		{
+			temp>>=1;			
+			if(GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_2)) temp|=0x80;	//此处调用库函数读取接收引脚的状态	
+			delay_us(104);
+		}
+		iouart3_recvbuf[iouart3_recvlen] = temp;
+		iouart3_recvlen++;
+		if(iouart3_recvlen >=IOUART3_RECVLEN) iouart3_recvlen = 0;
+		EXTI_ClearITPendingBit(EXTI_Line2);
+	  NVIC->ISER[EXTI2_IRQn>>0x05] = (uint32_t)0x01 << (EXTI2_IRQn & (uint8_t)0x1F);
+	}
+    }
+
+28、在stm32中产生随机数可以利用C的标准库结合定时器时间来实现.主要用到的两个函数是srand和rand.
+    srand和rand()配合使用产生伪随机数序列。rand函数在产生随机数前，需要系统提供的生成伪随机数序列的种子，rand根据这个种子的值产生一系列随机数。
+    如果系统提供的种子没有变化，每次调用rand函数生成的伪随机数序列都是一样的。
+    srand(unsigned seed)通过参数seed改变系统提供的种子值，从而可以使得每次调用rand函数生成的伪随机数序列不同，从而实现真正意义上的“随机”。
+
+    通常可以利用系统时间来改变系统的种子值，即srand(time(NULL))，可以为rand函数提供不同的种子值，进而产生不同的随机数序列。
+    srand()函数：
+
+    头文件：#include<stdlib.h>
+
+    原型：void  srand(unsigned int seed);
+
+    rand()函数：
+
+    头文件：#include<time.h>
+
+    在你的文件里面包含两个头文件，直接调用以上的函数就行，至于需要修改的seed，目前采用的方法主要两种，一种是采用定时器时间seed，一种是采用读取某个悬    空引脚adc的数值作为seed.
+
+    int main()
+    {
+	int p;
+        time_init(71,0);//设定一个微秒定时器（或毫秒）
+	while(1)
+	{		
+           srand(time_us);
+           p=rand()%5 +1;//
+		
+           printf("%d\r ",p);
+           delay_ms(1000);
+	}
+    }	
+   
+29、结构体初始化
+	typefdef struct 
+	{
+	   u16 a;
+	   u16 b;
+    }VALUE;
+     初始化  VALUE hh = {0};
+     清空缓存 memset(&hh,0,sizeof(hh));
+
+
+30、keil 生成.bin文件
+
+   根据生成的.axf文件生成.bin
+
+   1、 魔术棒-》output->填写生成的文件名
+
+   2、 魔术棒-》user ->勾选Run #1 ->  D:\Keil5\ARM\ARMCC\bin\fromelf.exe    --bin  -o  ../obj/demo.bin  ../obj/demo.axf
+
+
+31、宏定义不占内存空间，因为宏在预处理阶段就会被替换掉，到了编译的阶段是没有宏存在的，它自然到不了可执行文件中，所以它不占内存空间。
+
+32、C代码执行步骤：预处理（#define/#ifdef/#include）->编译->汇编->链接->可执行文件
+
+33、全局变量和静态变量是在编译的时候就已经分配好在数据段，也就是说在执行main函数之前就已经分配好了地址，如果定义的时候已经初始化，那      么就存放初始化的值，如果没有初始化，则由编译器初始化为0。这就说明在整个程序的执行过程中全局变量和静态变量的地址和类型不会发生变化     ，可能变化的只是他的值。对于动态变量，则在编译的阶段并不分配内存，而是执行到相应的代码段时再分配内存。
+
+
+34、不同机器内部对变量的字节存储顺序不同，有的采用大端模式(big-endian)，有的采用小端模式(little-endian)。 大端模式是指高字节数据存放在低地址处，低字节数据放在高地址处。 小端模式是指低字节数据存放在低地址处，高字节数据放在高地址处。 在网络上传输数据时，由于数据传输的两端可能对应不同的硬件平台，采用的存储字节顺序也可能不一致，因此 TCP/IP 协议规定了在网络上必须采用网络字节顺序(也就是大端模式) 
+
+35、硬件IIC和模拟对比
+	硬件IIC配置复杂，有固定的管脚，可移植性不高
+	模拟IIC灵活，可移植性好。
+	
+36、USART和UART的区别：
+	USART：universal synchronous asynchronous receiver and transmitter 通用同步异步收发器
+	UART：universal asynchronous receiver and transmitter   通用异步收发器
+	USART 支持同步模式，因此USART 需要同步始终信号USART_CK（如STM32 单片机），
+	      通常情况同步信号很少使用，因此一般的单片机UART和USART使用方式是一样的，都使用异步模式。
+37、C语言程序代码优化方法
+     * 选择合适的算法和数据结构
+     * 使用尽量小的数据类型
+     * 使用自加、自减指令
+     * 减少运算的强度
+		求余运算（a=a%8改为a=a&7）
+        平方运算（a=pow(a,2.0)改为a=a*a）
+        用移位实现乘除法运算
+     * 延时函数的自加改为自减
+     * switch语句中根据发生频率来进行case排序
+	 
+38、格式控制串输出
+	if (pc){
+	 int offset = strlen(pc);
+        va_list   v_args;
+        va_start(v_args, format);
+        (void)vsnprintf(pc+offset,
+                        (size_t      ) sz-offset,
+                        (char const *) format,
+                        v_args);
+         va_end(v_args);
+         return strlen(pc);
+    } else {
+        return 0;
+	}
+39、modf()函数:
+	modf()是分解x，以得到x的整数和小数部分。
+	
+	double modf(double x,double *integer)
+
+		返回x的小数部分，符号与x相同。
+		x是浮点值，integer是指向一个对象的指针。
+		
+40、stm32f103xx的容量
+		E系列是Flash = 512K, RAM = 64K
+		C系列是Flash = 256K，RAM = 48K
+		
+41、关于实时操作系统例如uCOS-III的任务栈大小的单位：
+		例  CPU_STK_SIZE   128
+		追溯：	typedef  CPU_ADDR  CPU_STK_SIZE;
+				typedef  CPU_INT32U  CPU_ADDR;
+				实际任务栈大小   128 * 4 = 512byte = 0.5k
+
+	

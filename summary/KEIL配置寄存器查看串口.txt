@@ -1,0 +1,21 @@
+1、魔术棒--》Target--》Systerm Viewer File--》路径 ：C:\Keil_v5\ARM\Pack\Keil\STM32F1xx_DFP\2.2.0\SVD ，勾选 Use Custom File 
+
+2、Debug--》Dialog DLL ->更改为DARMSTM.DLL  Parameter:STM32F103VE(对应的芯片类型)
+
+
+===================================================================================
+Error:Flash Download Failed-"Cortex-M3"出现一般有两种情况：
+
+1、SWD模式下，Debug菜单中，Reset菜单选项（Autodetect/HWreset/sysresetReq/Vectreset）默认是AutoDetect，改成SysResetReq即可。
+
+
+
+2、Jtag模式下，主要是芯片大小选错。Flash->Configure Falsh Tools配置窗口，切换到“Utilities"页，按“Setting"按钮进入“Flash download setup"配置窗口，在“Flash download setup"配置窗口点击“Add”按钮,在“Add Flash Programming Algorlthm"窗口，根据你实际使用的芯片选择，若是STM32F103VBT6，应先择"STM32F10X 128kB Flash"。
+
+
+
+
+
+3、KEIL5中使用Jlink仿真，
+   1、要更改魔术棒->Debug->Seting->ort->sw
+   2、更改utilities->setings->add添加对应的芯片		

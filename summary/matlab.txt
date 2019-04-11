@@ -1,0 +1,20 @@
+matlab 7处理文本数据
+
+1、导入数据，存储数据为cell型
+2、a=cell2mat(test)将细胞元素test转换为char数组
+3、a(1)、a(2)可以访问字符串元素
+
+
+绘制点数不同的曲线：
+假设你原来两个数据 y1，y2
+x1=linspace(0,1,length(y1));%生成对应于y1的横坐标
+x2=linspace(0,1,length(y2));%生成对应于y2的很坐标
+%很坐标从0~1，这里可以根据需要改任何需要范围
+plot(x1,y1,'r');hold on;
+plot(x2,y2,'b');hold off;
+legend('y1','y2');         %添加图例
+
+
+打印输出
+output = sprintf('num:%d,num1:%d',num,num1);
+disp(output);

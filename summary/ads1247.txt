@@ -1,0 +1,32 @@
+ADS124X 
+1、24-Bit, 2-kSPS
+2、SPI™兼容串行接口
+3、输入多路复用器支持四个差分输入对于ADS1248，两个用于ADS1247，一个用于ADS1246。
+4、封装 ：TSSOP (20)  20引脚
+5、引脚说明：
+	AIN0/IEXC   PIN9   模拟输入0，可选励磁电流输出
+	AIN1/IEXC   PIN10  模拟输入1，可选励磁电流输出
+	AIN2/IEXC/GPIO2  PIN11  模拟输入2，可选励磁电流输出，或通用数字输入/输出引脚2
+	AIN3/IEXC/GPIO3  PIN12  模拟输入3，可选励磁电流输出，或通用数字输入/输出引脚3
+	AVDD   PIN14  正模拟电源，连接一个0.1μF电容AVSS
+	AVSS   PIN13  负模拟电源
+	CLK    PIN3   外部时钟输入，连接到数字地以激活内部振荡器
+	CS     PIN16  片选
+	DGND   PIN2   数字接地
+	DIN    PIN19  串行数据输入MOSI
+	DOUT/DRDY PIN18  串行数据输出或数据输出与数据就绪
+	DRDY   PIN17     数据就绪（低电平有效）
+	DVDD   PIN1      数字供电，将一个0.1μF电容连接到DGND
+	REFN0/GPIO1   PIN6   负外部参考输入0，或通用数字输入/输出引脚1
+	REFP0/GPIO0   PIN5   正外部参考输入0，或通用数字输入/输出引脚0
+	RESET   PIN4     复位 低电平有效
+	SCLK    PIN20    串行时钟输入
+	START   PIN15    转换开始
+	VREFCOM  PIN8    负内部参考电压输出，连接到AVSS当使用单极电源或中压时使用双极电源时的电源
+	VREFOUT  PIN7    正内部参考电压输出，连接一个电容器在1μF至47μF至VREFCOM的范围内
+6、将START引脚脉冲为高电平以开始转换，转换完成由DRDY引脚变为低电平表示当IDAC0寄存器中的DRDY MODE位为1时，DOUT / DRDY引脚
+7、转换也可以通过SPI命令启动，与使用START引脚类似，器件可以使用SLEEP命令进入掉电模式，这与采用START引脚拉低类似	
+   要启动转换，WAKEUP命令会启动ADC并启动转换，类似于将START引脚返回高电平，START引脚必须保持高电平才能使用命令进行控制转换。
+   不要使用START引脚和使用命令控制转换
+8、发送SYNC命令会立即启动新的ADC转换，对于SYNC命令，数字重置过滤器，开始新转换而不完成先前的转换
+9、

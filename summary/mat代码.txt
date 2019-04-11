@@ -1,0 +1,37 @@
+len = length(data);
+len1 = len -32;
+head=1;
+output=0;
+pm25=0;
+pm25_of=1;
+pm10=0;
+pm10_of=1;
+x=0;
+y=0;
+for i=1:1:len
+    
+    if hex2dec(data{head}) == 66 && hex2dec(data{head+1}) == 77
+        num=0;
+        num1=hex2dec(data{head+30})*256+hex2dec(data{head+31});
+        for j=1:1:30
+            num = num + hex2dec(data{j+head-1});
+        end
+        if num==num1
+            %保存数据绘制曲线
+            %output = sprintf('num:%d,num1:%d',num,num1);
+            %disp(output);
+            pm25(pm25_of)=hex2dec(data{head+6})*256+hex2dec(data{head+7});
+            pm25_of=pm25_of+1;
+            pm10(pm10_of)=hex2dec(data{head+8})*256+hex2dec(data{head+9});
+            pm10_of=pm10_of+1;
+            %plot(x,y)
+            if head < len1
+                head=head+32;
+            else
+                break;
+            end
+        else
+            head=head+1;
+        end
+    end
+end

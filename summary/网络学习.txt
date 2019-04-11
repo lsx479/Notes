@@ -1,0 +1,7 @@
+htons()作用是将端口号由主机字节序转换为网络字节序的整数值。(host to net)
+
+inet_addr()作用是将一个IP字符串转化为一个网络字节序的整数值，用于sockaddr_in.sin_addr.s_addr。
+
+inet_ntoa()作用是将一个sin_addr结构体输出成IP字符串(network to ascii)。
+
+

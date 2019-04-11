@@ -1,0 +1,59 @@
+1、GSM_RX->UART3_TX
+   GSM_TX->UART3_RX
+
+   
+2、初始化 gsm_ctrl  PD9  推挽输出
+
+
+3、reset gsm 通过控制gsm_ctrl引脚   来拉低pwerkey (有时序)
+
+4、数据流入
+
+  #define ATBUFSIZE	512	
+  unsigned char GsmRecvbuf[ATBUFSIZE] = {0};
+
+5、数据流出
+
+  void GsmSend(unsigned char * sendbuf,unsigned short sendlen)
+  {
+	//send string to gsm
+	huart3.RxState = HAL_UART_STATE_READY; //
+	HAL_UART_Receive_IT(&huart3,GsmRecvbuf,ATBUFSIZE); //max recv len 128byte
+	//2?òaê1ó??D??·￠?í,?áμ????êìa
+	//HAL_UART_Transmit_DMA(&huart3,sendbuf,sendlen);
+	HAL_UART_Transmit(&huart3,sendbuf,sendlen,100); //timeout 100ms 11.52bytes/ms
+ }
+   
+
+CONNECT报文
+
+10 24 04 4D 51 54 54 04 02 1E 18 64 2D 49 4F 54 2D 59 53 52 44 41 51 30 37 48 57 30 30 30 30 38 30 30 32
+
+
+
+
+1、MQTT通信就是报文通信
+2、每个 MQTT 控制报文都包含一个固定报头，两个字节，
+   第一个字节    7    6    5      4                               2      3        1       0
+               （MQTT 控制报文的类型）（查表）                  （用于指定控制报文类型的标志位）（查表）
+
+                
+   第二个字节  剩余长度（剩余长度（Remaining Length）表示当前报文剩余部分的字节数，包括可变报头和负载的数据）
+
+   常见报文固定包头的第一个字节：
+	CONNCET   0x10
+	CONNACK   0x20
+        
+	SUBSCRIBE  0x82
+	SUBSACK    0x90
+
+	PUBLISH    0x3-(低四位可设定)
+	PUBACK     0x40
+
+        PINGREQ    0xC0   (心跳请求)
+	PINGRESP   0xD0  （心跳响应）
+
+
+
+	
+      	

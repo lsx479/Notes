@@ -1,0 +1,35 @@
+TickType_t xWaittime= pdMS_TO_TICKS( sec*1000 );
+TimeOut_t	xTimeOut;
+vTaskSetTimeOutState(&xTimeOut);
+
+
+xTaskCheckForTimeOut(&xTimeOut,&xWaittime) != pdFALSE
+
+ulTaskNotifyTake(pdFALSE, xWaittime);
+
+
+
+17.设置超时状态
+17.1函数描述
+      void vTaskSetTimeOutState( TimeOut_t *const pxTimeOut );
+
+      此函数仅用于高级用户，通常与API函数xTaskCheckForTimeOut()共同使用。
+
+      任务因为等待某事件而进入阻塞状态，通常情况下任务会设置一个等待超时周期。如果在等待事件超时，任务会退出阻塞状态。想象一个这样的应用，某任务等待一个事件而进入阻塞状态，但是事件迟迟不发生，超时后任务退出阻塞状态继续执行任务。假如任务等待的事件仍然没有发生，则任务又会阻塞在该事件下。只要任务等待的事件一直不发生，这个任务进入阻塞然后超时退出阻塞，再进入阻塞的循环就会一直存在。是不是可以设定一个总超时时间，只要总阻塞时间大于这个总超时时间，则可以结束这个任务或进行相应记录？freeRTOS提供了两个API函数来完成这个功能，这就是vTaskSetTimeOutState()和xTaskCheckForTimeOut()。
+
+      vTaskSetTimeOutState()函数用于设置初始条件，之后调用xTaskCheckForTimeOut()函数检查任务总阻塞时间是否超过总超时时间，如果没有超过，则调整剩余的超时时间计数器。
+
+17.2参数描述
+pxTimeOut：指向一个结构体的指针，该结构体用来保存确定超时是否发生的必要信息。vTaskSetTimeOutState()函数会设置结构体的成员。
+
+
+此函数仅用于高级用户，通常与API函数vTaskSetTimeOutState共同使用。
+
+      详细描述见17.设置超时状态。
+
+18.2参数描述
+pxTimeOut：指向一个结构体的指针。该结构体保存确定超时是否发生的必要信息。使用API函数vTaskSetTimeOutState初始化该结构体。
+pxTicksToWait：TickType_t指针，指向的变量保存总超时时间。
+18.3返回值
+pdTRUE：总超时发生
+pdFALSE：总超时未发生

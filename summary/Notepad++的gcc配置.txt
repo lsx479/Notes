@@ -1,0 +1,23 @@
+2，安装notepad++
+
+3，解压MinGW并放在C盘根目录
+
+4，计算机->属性->高级系统设置->高级->环境变量
+
+4,1，增加系统变量C_INCLUDE_PATH，变量值C:\MinGW\inlude
+
+4,2，增加系统变量EQ_LIBRARY_PATH，变量值C:\MinGW\lib
+
+5，找到PATH变量，在变量值后面增加;C:\MinGW\lib;C:\MinGW\bin;C:\MinGW\libexec\gcc\mingw32\4.6.2
+
+这里如果有部分重复了，只要添加没有的即可。
+
+6，然后CMD运行测试：gcc -v看结果，如果现实gcc版本号，就成功了
+
+7，notepad++  ，运行，然后添加以下两行代码：
+
+编译代码：gcc :cmd /k gcc -Wall -o "$(CURRENT_DIRECTORY)\$(NAME_PART).exe" "$(FULL_CURRENT_PATH)" & PAUSE & EXIT
+
+运行代码：run：cmd /k "$(CURRENT_DIRECTORY)\$(NAME_PART).exe" & PAUSE & EXIT
+
+8，特别要注意：编译和运行之前一定要保存当前的notepad++的代码

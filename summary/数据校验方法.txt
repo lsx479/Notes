@@ -1,0 +1,55 @@
+常用的数据校验方法
+
+1、累加和校验<返回低字节>
+	static U8 sum(U8 init, U8 buf[], int N){        //累加和做校验
+		U8 tmpc = init;
+		for (int i=0; i<N; i++){
+        tmpc += buf[i];
+		}
+		return tmpc;
+	}
+	
+2、CRC-8校验   
+	U8 crc8(U8 buf[], int N){
+		U8 tmpc = 0; 
+		for (int i=0; i<N; i++){
+			tmpc ^= buf[i];    
+			for (int j=8; j; j--){ 
+				(tmpc & BIT7)?tmpc=(tmpc<<1)^0x31:tmpc<<=1;
+			}
+		}
+		return tmpc; 
+	}
+3、	CRC-16校验
+	U16 crc16(U8 buf[], int N){
+		U16 tmpi = 0xFFFF;
+		for (int i=0; i<N; i++){
+			tmpi ^= buf[i];
+			for (int j=0; j<8; j++){
+				if (tmpi & 0x01){
+                tmpi = (tmpi >> 1) ^ 0xa001;
+				}
+				else {
+					tmpi >>= 1;
+				}
+			}
+		}
+		return tmpi;
+	}
+	
+	U16 crc16(U16 init, U8 buf[], int N){
+		U16 tmpi = init;
+		for (int i=0; i<N; i++){
+			tmpi ^= buf[i];
+			for (int j=0; j<8; j++){
+				if (tmpi & 0x01){
+					tmpi = (tmpi >> 1) ^ 0xa001;
+				}
+				else {
+					tmpi >>= 1;
+				}
+			}
+		}
+		return tmpi;
+	}
+	

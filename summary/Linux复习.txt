@@ -1,0 +1,17 @@
+1、在系统图形界面启动后，可使用Ctrl+Alt+F1~6切换到字符界面，再用Ctrl+Alt+F7切换到图形界面。对于使用虚拟机安装的linux，由于虚拟机屏蔽了Ctrl+Alt键，必须使用其他热键：Ctrl+Alt+shift+F1~6切换到字符界面；使用Alt+F7返回到图形界面。
+
+2、vim显示行号
+  临时显示行号
+  如果只是临时显示vim的行号，只须按ESC键退出编辑内容模式，输入“：set number”后按回车键，就可以显示行号了。行号显示只是暂时的，退出vim后再次打开vim就不显示行号了。
+
+  永久显示行号
+  cd /etc/vim/  
+  vim vimrc    set nu
+  
+3、虚拟机Linux和Windows使用共享文件夹
+	  配置路径：虚拟机-/设置-/选项-/共享文件夹->总是启用->选择要共享的文件夹路径
+	  Linux下 cd /mnt/hgfs/'共享文件夹'
+
+4、打包解包 tar
+   tar -cf  all.tar *.c     (打包-czfv)
+   tar -xf  all.tar        （解包-xzfv）

@@ -1,0 +1,9 @@
+AD篇
+1、Register Maps 寄存器映射
+2、BUS  总线
+3、SERIAL  串行
+4、PGA  可编程增益放大器
+5、Calibration     校准
+6、SPS   每秒采样次数   【衡量模数转换（ADC）时采样速率的单位】
+
+

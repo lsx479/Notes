@@ -1,0 +1,11 @@
+1、删除下方多余的空白单元格，shift+ctrl+下方向键，选中，右键删除保存，重新打开表即可看到进度条变长。
+2、在excel中选中某个单元格后该单元格所在的行与列能高亮显示
+	按ALT+F11调出vbe
+	双击左边你的表格，在右边代码窗口输入
+	Private Sub Worksheet_SelectionChange(ByVal Target As Range)
+    With Target
+        .Parent.Cells.Interior.ColorIndex = xlNone
+        .EntireRow.Interior.ColorIndex = 33    
+        .EntireColumn.Interior.ColorIndex = 33
+    End With
+	End Sub

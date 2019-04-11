@@ -1,0 +1,98 @@
+pycharm官网：https://www.jetbrains.com/
+1、Python中的openpyxl库可以对Excel进行操作
+2、Python中的if/for 语句后面加冒号
+3、对Excel操作时for语句 从i = 1 开始，访问Excel中的元素坐标  就是第几行第几列mysheet.cell(row=i,column=j).value
+4、for语句 i从1到40  写法：for i=1 in range (1:41):
+5、if 中的 与 and  或 or
+6、Python中不使用括号 以缩进表示同一类 
+7、安装需要的库时  在dos界面  python -m  pip install +(库名)
+8、使用openpyxl 库 对表格操作时  遍历整个行  注意  for i in range(sheet.max_row+1):
+9、excel某个单元格为空时的if写法  if sheet.cell(row = i,column = j).value == None:
+
+
+10、Python wheel文件
+    wheel是新的Python的disribution，用于替代Python传统的egg文件。目前有超过一半的库文件有对应的    wheel文件。
+
+   wheel的优势
+     1.对纯python和原生C扩展包更快安装。 
+     2.安装C扩展不需要OS X和Windows下编译器的协助。 
+     3.在跨平台和机器的情况下更加方便安装。
+11、脚本处理之txt文件读写
+	f = open("C:\Users\max\Desktop\data.txt",'r')  //以只读格式打开文本，注意路径和引号
+	f = open("C:\Users\max\Desktop\data.txt",'w')  //以只写格式打开文本，注意路径和引号
+	f.close()     //关闭文件，在对文件操作完成后必须关闭文件流
+	f.write(str)  //往文本中写入字符串
+	f.write(str+'\n')   //往文本中写入字符串后自动换行
+12、list 列表
+	定义一个list  
+		data = []      //定义一个data列表
+	获取长度
+		len(data)      //用len() 可以获取list的长度
+	添加元素
+		data.append(str)  //append() 可以在列表添加元素
+	插入元素
+		data.insert(str)  
+13、mysql编程
+	python数据库编程步骤：开始->创建connection->获取cursor->[执行查询/执行命令/获取数据/处理数据]->关闭cursor->关闭connection->结束
+	import pymysql
+	def getMQL():
+		connect = pymysql.connect(
+			host = '10.10.8.52',
+			port = 30002,
+            user = 'liushixiong8061',
+            passwd = 'PassWOrd_lsx350',
+            db = 'SENSOR1',
+            charset = 'utf8'
+		)
+		cursor = connect.cursor()
+		sql = "SELECT  dev_id FROM DEVICE_CAPTURE_DATA_13_201904 WHERE  CAP_TIME >= '2019-04-08 11:40:00' AND DEV_ID IN ('YSRDAQ01HW10059236')ORDER BY CAP_TIME DESC;"
+		try:
+			cursor.execute(sql)
+		except Exception as e:
+			connect.rollback()
+			print "connect error"
+		else:
+			connect.commit()
+			print "connect success"
+		//处理数据
+			//todo 
+		cursor.close()
+        connect.close()
+	//说明
+	1、import pymysql  //导入模块
+	2、创建连接对象 conn=connect(参数列表)
+		参数host：连接的mysql主机，如果本机是’localhost’
+		参数port：连接的mysql主机的端口，默认是3306
+		参数database：数据库的名称
+		参数user：连接的用户名
+		参数password：连接的密码
+		参数charset：通信采用的编码方式，推荐使用utf8
+	3、关闭连接 conn.close()
+	4、提交数据 conn.commit()
+	5、撤销数据 conn.rollback()
+	6、通过连接获取游标 cur = conn.cursor()返回Cursor对象，用于执行sql语句并获得结果
+	7、Cursor游标对象 目的: 执行sql语句
+	8、获取Cursor对象 cur = conn.cursor()
+	9、使用游标执行SQL语句 cur.execute(operation , [parameters])
+	10、执行SQL语句，返回受影响的行数，主要用于执行insert、update、delete语句
+	11、获取结果集中的一条 cur.fetchone() 返回一个元组 
+	12、获取结果集中的一条 cur.fetchmany(2) 返回一个元组 
+	13、获取结果集中的所有 cur.fetchall() 执行查询时，获取结果集的所有行，一行构成一个元组，再将这些元组装入一个元组返回.
+	14、关闭游标 cur.close()
+
+	sql太长换行说明
+		在一行末尾 加上“ \”，也就是空格加上\
+		也可以通过()小括号将每一行的字符串整齐拼接，回车以后会自动将每行的字符串进行拼接
+14、pycharm 中注释多行代码  快捷键 ctrl + /  ,再次按下  取消注释
+15、pycharm用鼠标滚轮控制字体大小字
+	pycharm字体放大的设置
+		File —> setting —> Keymap —>在搜寻框中输入：increase —> Increase Font Size（双击） —> 在弹出的对话框中选择Add Mouse Shortcut
+	Pycharm字体缩小的设置
+		File —> setting —> Keymap —>在搜寻框中输入：decrease —>Decrease Font Size（双击）—> 在弹出的对话框中选择Add Mouse Shortcut 
+		
+16、for i in range(len)   //整数遍历时必须要用range
+	将int、float 转str   直接str(2) = '2'  str(123.00) = '123.00' 
+17、python 文件流添加绝对路径的三种方式
+	f=open("C:\\Users\\dairen\\PycharmProjects\\untitled\\hotel.txt",'rt')
+	f=open("C:/Users/dairen/PycharmProjects/untitled/hotel.txt",'rt')
+	f=open(r'C:\Users\dairen\PycharmProjects\untitled\hotel.txt','rt')

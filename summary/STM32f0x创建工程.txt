@@ -1,0 +1,11 @@
+1、到官网下载固件库，类似"STM32F0xx_StdPeriph_Lib_V1.5.0"，解压得到文件"_htmresc"  "Libraries"  "Projects"   "Utilities".
+2、"Libraries\STM32F0xx_StdPeriph_Driver”下的inc与src是底层驱动。
+   "Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\iar"下的.s文件是芯片在IAR编程的启动文件，选错会报大量的“startup”错误。
+   "Libraries\CMSIS\Device\ST\STM32F0xx\Include"下有此芯片的系统配置文件"system_stm32f0xx.h”和“stm32f0xx.h”
+   "Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates"下有系统时钟配置文件"system_stm32f0xx.c"
+   "Projects\STM32F0xx_StdPeriph_Templates"下有stm32f0xx_conf.h、stm32f0xx_it.c、stm32f0xx_it.h
+   "Projects\STM32F0xx_StdPeriph_Templates\EWARM” 下有 stm32f0xx_flash.icf、stm32f0xx_ram.icf （STM32F10系列:stm32f10x_flash.icf、stm32f10x_flash_extsram.icf、stm32f10x_nor.icf 、stm32f10x_ram.icf ）.
+3、宏：USE_STDPERIPH_DRIVERSTM32F0XX
+	
+
+   
